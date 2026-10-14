@@ -19,6 +19,11 @@ def main() -> None:
         params["dataset"]["name"],
         revision=params["dataset"]["revision"],
     )
+    expected_splits = {"train", "validation", "test"}
+    missing_splits = expected_splits - set(dataset.keys())
+    if missing_splits:
+        raise ValueError(f"Acquired dataset is missing required splits: {sorted(missing_splits)}")
+
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     for split_name, split in dataset.items():
         split.to_csv(str(OUTPUT_DIR / f"{split_name}.csv"))

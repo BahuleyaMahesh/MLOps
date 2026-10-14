@@ -30,7 +30,7 @@ Prior to cleaning, an audit of the raw data (`data/raw/engsaf/`) revealed severa
 
 ## 3. Step-by-Step Preprocessing Pipeline
 
-The module [src/clean_data.py](file:///c:/Users/avina_lxw1l2h/Documents/AI-Powered%20Study%20Assistant/src/clean_data.py) executes the following sequential transformations:
+The module [src/clean_data.py](../src/clean_data.py) executes the following sequential transformations:
 
 ```mermaid
 flowchart TD
@@ -82,7 +82,7 @@ flowchart TD
 
 ## 4. Cleaning Audit Report Summary
 
-The cleaning run generated [reports/cleaning_report.json](file:///c:/Users/avina_lxw1l2h/Documents/AI-Powered%20Study%20Assistant/reports/cleaning_report.json), tracking every modification:
+The cleaning run generated [reports/cleaning_report.json](../reports/cleaning_report.json), tracking every modification:
 
 | Split | Total Rows | Questions Cleaned | Student Answers Cleaned | Reference Answers Cleaned | HTML Entities Resolved | Markdown Markers Cleaned | Empty Answers Handled |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |

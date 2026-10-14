@@ -9,8 +9,8 @@ stages:
       size: 350
     - path: src/acquire_data.py
       hash: md5
-      md5: e92dd605796642e3a2859231493dc032
-      size: 849
+      md5: 266b4dd7f0bb2e1172e7deebd42e1598
+      size: 1090
     outs:
     - path: data/raw/engsaf
       hash: md5
@@ -27,13 +27,17 @@ stages:
       nfiles: 3
     - path: src/profile_data.py
       hash: md5
-      md5: c3a6e196ebbe33ed845c5bd82a49ae1e
-      size: 3384
+      md5: 99db25db390d4ce87b761b1a19ebcdb6
+      size: 12197
     outs:
     - path: reports/data_profile.json
       hash: md5
-      md5: 9a45f2be773dcb44173fcbdd4ac6da22
-      size: 2409
+      md5: ba0f24639ef53c087ab223834247d718
+      size: 8442
+    - path: reports/engsaf_eda.md
+      hash: md5
+      md5: 7e24245993088be0a442f9550b19af04
+      size: 4010
   baseline:
     cmd: python -m src.train_baseline
     deps:
@@ -48,17 +52,29 @@ stages:
       size: 350
     - path: src/features.py
       hash: md5
-      md5: 1d3f27087ff06e13378bc0ab099d4921
-      size: 2245
+      md5: 47e846faa796521d129ecbf0951bf0a7
+      size: 8600
+    - path: src/grouped_split.py
+      hash: md5
+      md5: f16042eb6dc26dff09f73fc9e252948a
+      size: 4584
     - path: src/train_baseline.py
       hash: md5
-      md5: e52befe066cff425b1715f0fc085ca70
-      size: 14003
+      md5: 1e5cf0c4dc4e625e824775382b65577d
+      size: 30759
     outs:
     - path: reports/baseline_metrics.json
       hash: md5
-      md5: 489be744bc9756d8d7a0b675ba8e6328
-      size: 9537
+      md5: 3b772f07e0508621fa72469ef6eab50a
+      size: 24038
+    - path: reports/error_analysis.md
+      hash: md5
+      md5: f49e653cc9630e0f16a0edb9900d3933
+      size: 5693
+    - path: reports/model2_comparison.md
+      hash: md5
+      md5: 242d1b606aa591b65249f0b4bdb09f7c
+      size: 3269
   clean:
     cmd: python -m src.clean_data
     deps:
@@ -73,8 +89,8 @@ stages:
       size: 350
     - path: src/clean_data.py
       hash: md5
-      md5: 185ad68cdfee8b2b875543b57b0d05ad
-      size: 7415
+      md5: 149cff22aafbbcab7fa759f636fe8642
+      size: 7627
     outs:
     - path: data/processed/engsaf
       hash: md5

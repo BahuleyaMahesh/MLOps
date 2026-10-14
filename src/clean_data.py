@@ -97,10 +97,12 @@ def clean_split(
     cleaned_df = frame.copy()
     cleaned_df["score"] = cleaned_df["score"].astype(int)
 
+    # Check for empty or missing student answers cleanly
     stats = {
         "total_rows": int(len(frame)),
         "empty_student_answers_before": int(
-            frame["student_answer"].astype(str).str.strip().eq("").sum()
+            frame["student_answer"].isna().sum()
+            + frame["student_answer"].dropna().astype(str).str.strip().eq("").sum()
         ),
         "text_columns_modified": {},
         "html_entities_resolved": 0,
@@ -110,7 +112,8 @@ def clean_split(
     # Track transformations across text columns
     text_cols = ["question", "student_answer", "reference_answer", "rationale", "mark_scheme"]
     for col in text_cols:
-        raw_series = frame[col].astype(str)
+        # Fill missing values with empty string rather than converting NaN to "nan"
+        raw_series = frame[col].fillna("").astype(str)
         # Count HTML entities in raw
         stats["html_entities_resolved"] += int(
             raw_series.map(lambda s: len(HTML_ENTITY_PATTERN.findall(s))).sum()

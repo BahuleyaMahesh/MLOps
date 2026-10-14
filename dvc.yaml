@@ -22,12 +22,16 @@ stages:
       - data/processed/engsaf
     outs:
       - reports/data_profile.json
+      - reports/engsaf_eda.md
   baseline:
     cmd: python -m src.train_baseline
     deps:
       - src/features.py
+      - src/grouped_split.py
       - src/train_baseline.py
       - data/processed/engsaf
       - params.yaml
     outs:
       - reports/baseline_metrics.json
+      - reports/model2_comparison.md
+      - reports/error_analysis.md
