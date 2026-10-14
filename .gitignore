@@ -27,8 +27,3 @@ mlruns/
 Thumbs.db
 .vscode/
 .idea/
-
-# DVC and Data Note:
-# Do NOT blanket-ignore data/ at the root. Git tracks data/README.md,
-# .dvc pointer files, and DVC-generated .gitignore files.
-# DVC manages ignores for untracked datasets.
