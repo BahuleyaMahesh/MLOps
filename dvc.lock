@@ -1,0 +1,87 @@
+schema: '2.0'
+stages:
+  acquire:
+    cmd: python -m src.acquire_data
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: 8db51c3a28b41d17404eb5945c1075a0
+      size: 350
+    - path: src/acquire_data.py
+      hash: md5
+      md5: e92dd605796642e3a2859231493dc032
+      size: 849
+    outs:
+    - path: data/raw/engsaf
+      hash: md5
+      md5: f19ca9b85d0dba57fcea3985a0ee09db.dir
+      size: 4798450
+      nfiles: 3
+  explore:
+    cmd: python -m src.profile_data
+    deps:
+    - path: data/processed/engsaf
+      hash: md5
+      md5: 475aaebaed7b5779ec459e0845841803.dir
+      size: 4740725
+      nfiles: 3
+    - path: src/profile_data.py
+      hash: md5
+      md5: c3a6e196ebbe33ed845c5bd82a49ae1e
+      size: 3384
+    outs:
+    - path: reports/data_profile.json
+      hash: md5
+      md5: 9a45f2be773dcb44173fcbdd4ac6da22
+      size: 2409
+  baseline:
+    cmd: python -m src.train_baseline
+    deps:
+    - path: data/processed/engsaf
+      hash: md5
+      md5: 475aaebaed7b5779ec459e0845841803.dir
+      size: 4740725
+      nfiles: 3
+    - path: params.yaml
+      hash: md5
+      md5: 8db51c3a28b41d17404eb5945c1075a0
+      size: 350
+    - path: src/features.py
+      hash: md5
+      md5: 1d3f27087ff06e13378bc0ab099d4921
+      size: 2245
+    - path: src/train_baseline.py
+      hash: md5
+      md5: e52befe066cff425b1715f0fc085ca70
+      size: 14003
+    outs:
+    - path: reports/baseline_metrics.json
+      hash: md5
+      md5: 489be744bc9756d8d7a0b675ba8e6328
+      size: 9537
+  clean:
+    cmd: python -m src.clean_data
+    deps:
+    - path: data/raw/engsaf
+      hash: md5
+      md5: f19ca9b85d0dba57fcea3985a0ee09db.dir
+      size: 4798450
+      nfiles: 3
+    - path: params.yaml
+      hash: md5
+      md5: 8db51c3a28b41d17404eb5945c1075a0
+      size: 350
+    - path: src/clean_data.py
+      hash: md5
+      md5: 185ad68cdfee8b2b875543b57b0d05ad
+      size: 7415
+    outs:
+    - path: data/processed/engsaf
+      hash: md5
+      md5: 475aaebaed7b5779ec459e0845841803.dir
+      size: 4740725
+      nfiles: 3
+    - path: reports/cleaning_report.json
+      hash: md5
+      md5: 45bc59afc927c27acb06becbca7f3520
+      size: 1600

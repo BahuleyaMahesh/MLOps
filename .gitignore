@@ -1,0 +1,19 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.py[cod]
+
+# DVC-managed data stays out of Git; use an access-controlled remote only
+# after dataset permissions are confirmed.
+/data/raw/
+/data/processed/
+/.dvc/cache/
+
+# Local experiment and report outputs
+/mlruns/
+/mlflow.db
+/mlartifacts/
+/reports/*.json
+/reports/*.png
+/reports/*.csv

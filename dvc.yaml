@@ -1,0 +1,33 @@
+stages:
+  acquire:
+    cmd: python -m src.acquire_data
+    deps:
+      - src/acquire_data.py
+      - params.yaml
+    outs:
+      - data/raw/engsaf
+  clean:
+    cmd: python -m src.clean_data
+    deps:
+      - src/clean_data.py
+      - data/raw/engsaf
+      - params.yaml
+    outs:
+      - data/processed/engsaf
+      - reports/cleaning_report.json
+  explore:
+    cmd: python -m src.profile_data
+    deps:
+      - src/profile_data.py
+      - data/processed/engsaf
+    outs:
+      - reports/data_profile.json
+  baseline:
+    cmd: python -m src.train_baseline
+    deps:
+      - src/features.py
+      - src/train_baseline.py
+      - data/processed/engsaf
+      - params.yaml
+    outs:
+      - reports/baseline_metrics.json
