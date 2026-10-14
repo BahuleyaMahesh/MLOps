@@ -1,0 +1,82 @@
+# Topic Taxonomy Scaffold (Model 1: Topic Classification)
+# ========================================================
+# STATUS: PROVISIONAL / PENDING DATASET PROFILING AND TEAM REVIEW
+#
+# NOTICE:
+# This taxonomy is an unfinalized structural scaffold.
+# Do NOT treat these topic mappings as finalized ground truth.
+# Once Decision D0 is resolved and Member 1 profiles the actual tag distribution:
+# 1. 8 to 12 coarse topics will be finalized and approved by the team.
+# 2. Tag phrases will be mapped to coarse topic IDs.
+#
+# Multi-Topic Conflict Rule:
+# If a question's tags match multiple topics, map to the dominant topic if confidence >= threshold,
+# otherwise drop/flag the sample and log the occurrence.
+
+taxonomy_metadata:
+  status: "provisional_scaffold"
+  finalized: false
+  target_topic_count_min: 8
+  target_topic_count_max: 12
+  approval_status: "pending_profiling"
+  last_updated: "2026-10-14"
+  notes: >
+    Pending dataset schema verification and tag frequency profiling.
+    The final taxonomy will represent 8-12 coarse engineering/programming topics.
+
+conflict_resolution:
+  policy: "dominant_topic_or_drop"
+  dominance_ratio_threshold: 0.60
+  unresolved_action: "drop_and_log"
+
+# Provisional 8-12 Coarse Topic Buckets (Structural Scaffold)
+topics:
+  - id: "algorithms_and_data_structures"
+    display_name: "Algorithms & Data Structures"
+    description: "Sorting, searching, complexity, trees, graphs, dynamic programming"
+    tags: []  # To be populated after tag profiling
+
+  - id: "web_frontend"
+    display_name: "Web Frontend Development"
+    description: "HTML, CSS, JavaScript, TypeScript, frontend frameworks, DOM manipulation"
+    tags: []
+
+  - id: "web_backend_and_apis"
+    display_name: "Web Backend & APIs"
+    description: "Server-side logic, REST APIs, GraphQL, microservices, authentication"
+    tags: []
+
+  - id: "databases_and_storage"
+    display_name: "Databases & Storage"
+    description: "SQL, NoSQL, query optimisation, schema design, caching, indexing"
+    tags: []
+
+  - id: "operating_systems_and_systems"
+    display_name: "Operating Systems & Systems Programming"
+    description: "Memory management, Linux/POSIX, C/C++, concurrency, processes, threads"
+    tags: []
+
+  - id: "data_science_and_ml"
+    display_name: "Data Science & Machine Learning"
+    description: "Data analysis, pandas, NumPy, scikit-learn, deep learning, statistical modeling"
+    tags: []
+
+  - id: "mobile_development"
+    display_name: "Mobile App Development"
+    description: "Android, iOS, Flutter, React Native, mobile runtime environments"
+    tags: []
+
+  - id: "devops_cloud_and_infrastructure"
+    display_name: "DevOps & Cloud Infrastructure"
+    description: "Docker, containers, CI/CD, Git, Kubernetes, cloud platforms"
+    tags: []
+
+  - id: "software_engineering_and_testing"
+    display_name: "Software Engineering & Testing"
+    description: "Unit testing, integration testing, design patterns, architecture, debugging"
+    tags: []
+
+  - id: "computer_networks_and_security"
+    display_name: "Networks & Security"
+    description: "TCP/IP, sockets, encryption, cybersecurity, protocols, TLS/SSL"
+    tags: []

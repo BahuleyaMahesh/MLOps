@@ -1,0 +1,34 @@
+# Python virtual environment
+.venv/
+venv/
+ENV/
+
+# Python byte-code and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local MLflow tracking
+mlruns/
+.trash/
+
+# Notebook and test caches
+.ipynb_checkpoints/
+.pytest_cache/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# DVC and Data Note:
+# Do NOT blanket-ignore data/ at the root. Git tracks data/README.md,
+# .dvc pointer files, and DVC-generated .gitignore files.
+# DVC manages ignores for untracked datasets.

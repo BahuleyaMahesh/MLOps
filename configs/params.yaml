@@ -1,0 +1,127 @@
+# AI-Powered Study Assistant for Engineering Students
+# MLOps Phase 1: Development & Reproducibility Configuration
+# ==========================================================
+
+# 1. Global & Environment Settings
+# --------------------------------
+global:
+  random_seed: 42
+  environment: "development"
+  project_name: "study-assistant-mlops"
+
+# 2. Storage & Directory Paths
+# ----------------------------
+paths:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  models_dir: "models"
+  metrics_dir: "metrics"
+  reports_dir: "docs"
+
+# 3. Model 1: Question-Topic Classifier
+# -------------------------------------
+# UNVERIFIED DATASET NOTICE:
+# Dataset choice is provisional and pending faculty approval (Decision D0).
+# The schema, actual row count (viewer shows ~1.95M vs 778K title), and column names
+# of Omarrran/StackPulse_778K_QnA_Code_dataset remain UNVERIFIED.
+# Column names below are configurable placeholders to be confirmed post-profiling.
+# Do NOT guess column names, splits, or labels.
+model1_topic_classifier:
+  dataset:
+    id: "Omarrran/StackPulse_778K_QnA_Code_dataset"
+    alternative_id: "habedi/stack-exchange-dataset"
+    provisional: true
+    approval_status: "pending_review_and_profiling"
+    # Starting sample size for Colab feasibility (Decision D2).
+    # Configurable starting point, NOT a verified optimum.
+    sample_size: 100000
+    stratified: true
+    split_ratios:
+      train: 0.80
+      val: 0.10
+      test: 0.10
+
+  # Configurable column mapping (to be updated once dataset schema is profiled)
+  columns:
+    text_fields:
+      - "title"   # Candidate field; verify if title exists
+      - "body"    # Candidate field; verify if body exists
+    raw_tag_field: "tags"  # Candidate field; verify if tags exist in StackPulse
+    target_topic_field: "topic"
+
+  preprocessing:
+    strip_html: true
+    code_block_handling: "replace_with_token"  # e.g., <CODE>
+    min_text_length: 10
+    max_features_tfidf: 10000
+    ngram_range: [1, 2]
+
+  models:
+    candidate_list:
+      - "majority_baseline"
+      - "rule_based_taxonomy"
+      - "tfidf_logistic_regression"
+      - "tfidf_linear_svm"
+      - "tfidf_complement_nb"
+      - "minilm_logistic_regression"
+
+  metrics:
+    primary: "macro_f1"
+    secondary:
+      - "per_class_precision"
+      - "per_class_recall"
+      - "confusion_matrix"
+
+# 4. Model 2: Student Answer Scorer
+# ---------------------------------
+# Verified dataset: IsmaelMousa/engsaf (5.58k rows)
+# Target: score in {0, 1, 2} (0 = incorrect, 1 = partially correct, 2 = correct)
+# NOTE: rationale and mark_scheme are strictly excluded from features to prevent leakage.
+model2_answer_scorer:
+  dataset:
+    id: "IsmaelMousa/engsaf"
+    provisional: false
+    approval_status: "confirmed_accessible"
+
+  columns:
+    target_field: "score"
+    target_classes: [0, 1, 2]
+    input_fields:
+      question: "question"
+      student_answer: "student_answer"
+      reference_answer: "reference_answer"
+    # EXCLUDED COLUMNS: Target leakage and zero-signal features
+    excluded_fields:
+      - "rationale"    # Grader feedback explaining the score (target leakage)
+      - "mark_scheme"  # Constant string mapping (0/1/2); carries no predictive signal
+
+  evaluation_splits:
+    provided_split: true          # Use existing train/val/test
+    question_grouped_split: true  # GroupKFold grouped by question to test generalisation
+    n_splits_group_kfold: 5
+
+  features:
+    embedding_model: "all-MiniLM-L6-v2"
+    use_question_text: false       # Ablation: compare with vs without question text
+    include_length_features: true  # Student length, ref length, ratio
+    include_similarity_features:   # |u - v|, u * v, cosine similarity
+      - "cosine_similarity"
+      - "manhattan_distance"
+      - "elementwise_product"
+
+  models:
+    candidate_list:
+      - "majority_baseline"
+      - "cosine_threshold_baseline"
+      - "features_logistic_regression"
+      - "features_xgboost"
+      - "features_ordinal_regression"
+
+  metrics:
+    primary:
+      - "macro_f1"
+      - "quadratic_weighted_kappa"
+    secondary:
+      - "per_class_recall"
+      - "confusion_matrix"
+      - "mean_absolute_error"
