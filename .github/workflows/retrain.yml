@@ -1,0 +1,77 @@
+name: Retrain Pipeline & Model Promotion Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for triggered retraining (e.g., data drift, weekly schedule, new data)"
+        required: true
+        default: "manual_trigger"
+  schedule:
+    - cron: "0 0 * * 0"  # Every Sunday at midnight UTC
+
+jobs:
+  retrain-and-evaluate:
+    name: Execute Retraining Pipeline & Evaluate Promotion Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run DVC Pipeline Retrain
+        run: |
+          dvc repro
+
+      - name: Run Model Promotion Gate Check
+        run: |
+          python -c "
+          import json, sys
+          from pathlib import Path
+
+          metrics_path = Path('reports/baseline_metrics.json')
+          if not metrics_path.exists():
+              print('ERROR: reports/baseline_metrics.json not found')
+              sys.exit(1)
+
+          with open(metrics_path) as f:
+              data = json.load(f)
+
+          # Promotion Criteria Verification
+          gkf = data.get('question_grouped_kfold_cv', {})
+          lr_gkf = gkf.get('logistic_regression', {})
+
+          macro_f1 = lr_gkf.get('macro_f1_mean', 0.0)
+          qwk = lr_gkf.get('qwk_mean', 0.0)
+          acc = lr_gkf.get('accuracy_mean', 0.0)
+
+          print(f'Candidate GroupKFold Macro-F1: {macro_f1:.4f} (Threshold >= 0.50)')
+          print(f'Candidate GroupKFold QWK:      {qwk:.4f} (Threshold >= 0.50)')
+          print(f'Candidate GroupKFold Accuracy: {acc:.4f} (Threshold >= 0.60)')
+
+          if macro_f1 < 0.50 or qwk < 0.50:
+              print('FAILED: Candidate model did not meet the minimum promotion threshold!')
+              sys.exit(1)
+          else:
+              print('SUCCESS: Candidate model PASSED the Promotion Gate! Eligible for @Challenger/@Production.')
+          "
+
+      - name: Upload Retrained Reports as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: retrain-reports
+          path: |
+            reports/baseline_metrics.json
+            reports/model2_comparison.md
+            reports/error_analysis.md

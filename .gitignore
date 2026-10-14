@@ -1,19 +1,38 @@
+# Python bytecode and caches
 __pycache__/
 .pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.py[cod]
+*$py.class
+
+# Virtual environments
 .venv/
 venv/
-*.py[cod]
+ENV/
+env/
 
-# DVC-managed data stays out of Git; use an access-controlled remote only
-# after dataset permissions are confirmed.
-/data/raw/
-/data/processed/
+# DVC-managed data & models stay strictly out of Git
+/data/
+/models/
 /.dvc/cache/
+/.dvc/tmp/
+/.dvc_remote/
 
-# Local experiment and report outputs
+# MLflow local database, runs, and artifacts
 /mlruns/
 /mlflow.db
+/mlflow.db-journal
 /mlartifacts/
+
+# Generated reports & metrics (tracked via DVC / CI artifacts)
 /reports/*.json
 /reports/*.png
 /reports/*.csv
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

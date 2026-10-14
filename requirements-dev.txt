@@ -1,0 +1,5 @@
+# Development, testing, and CI quality dependencies
+pytest==8.4.2
+flake8==7.1.1
+bandit==1.8.2
+pip-audit==2.7.3

@@ -1,15 +1,12 @@
-datasets>=3.0,<5.0
-dvc>=3.0,<4.0
-mlflow>=2.14,<4.0
-numpy>=1.26,<3.0
-pandas>=2.0,<3.0
-PyYAML>=6.0,<7.0
-scikit-learn>=1.5,<2.0
-pytest>=8.0,<9.0
-beautifulsoup4>=4.12.0
-matplotlib>=3.8.0
-pyarrow>=15.0.0
-xgboost>=2.0.0
-sentence-transformers>=3.0.0
-ipykernel>=6.29.0
-setuptools>=70.0.0
+# Pinned production dependencies for Phase 1 (Python 3.10 / 3.11)
+beautifulsoup4==4.15.0
+datasets==4.8.5
+dvc==3.67.1
+joblib==1.6.0
+matplotlib==3.10.9
+mlflow==3.17.1
+numpy==2.2.6
+pandas==2.3.3
+pyarrow==25.0.1
+PyYAML==6.0.3
+scikit-learn==1.7.2

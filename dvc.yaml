@@ -1,5 +1,5 @@
 stages:
-  acquire:
+  ingest:
     cmd: python -m src.acquire_data
     deps:
       - src/acquire_data.py
@@ -23,12 +23,33 @@ stages:
     outs:
       - reports/data_profile.json
       - reports/engsaf_eda.md
-  baseline:
-    cmd: python -m src.train_baseline
+  features:
+    cmd: python -m src.extract_features
     deps:
+      - src/extract_features.py
+      - src/features.py
+      - data/processed/engsaf
+      - params.yaml
+    outs:
+      - data/features/engsaf
+  train:
+    cmd: python -m src.train
+    deps:
+      - src/train.py
+      - src/features.py
+      - data/features/engsaf
+      - data/processed/engsaf
+      - params.yaml
+    outs:
+      - models
+  evaluate:
+    cmd: python -m src.evaluate
+    deps:
+      - src/evaluate.py
       - src/features.py
       - src/grouped_split.py
-      - src/train_baseline.py
+      - models
+      - data/features/engsaf
       - data/processed/engsaf
       - params.yaml
     outs:

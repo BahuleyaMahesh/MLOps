@@ -101,3 +101,124 @@ stages:
       hash: md5
       md5: 45bc59afc927c27acb06becbca7f3520
       size: 1600
+  ingest:
+    cmd: python -m src.acquire_data
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: 8db51c3a28b41d17404eb5945c1075a0
+      size: 350
+    - path: src/acquire_data.py
+      hash: md5
+      md5: 266b4dd7f0bb2e1172e7deebd42e1598
+      size: 1090
+    outs:
+    - path: data/raw/engsaf
+      hash: md5
+      md5: f19ca9b85d0dba57fcea3985a0ee09db.dir
+      size: 4798450
+      nfiles: 3
+  features:
+    cmd: python -m src.extract_features
+    deps:
+    - path: data/processed/engsaf
+      hash: md5
+      md5: 475aaebaed7b5779ec459e0845841803.dir
+      size: 4740725
+      nfiles: 3
+    - path: params.yaml
+      hash: md5
+      md5: 8db51c3a28b41d17404eb5945c1075a0
+      size: 350
+    - path: src/extract_features.py
+      hash: md5
+      md5: b4d769c023e4cf8a985f32d1b29b985b
+      size: 3378
+    - path: src/features.py
+      hash: md5
+      md5: 47e846faa796521d129ecbf0951bf0a7
+      size: 8600
+    outs:
+    - path: data/features/engsaf
+      hash: md5
+      md5: dad9c568df2bda1792c4d32333840ea6.dir
+      size: 8450157
+      nfiles: 4
+  train:
+    cmd: python -m src.train
+    deps:
+    - path: data/features/engsaf
+      hash: md5
+      md5: dad9c568df2bda1792c4d32333840ea6.dir
+      size: 8450157
+      nfiles: 4
+    - path: data/processed/engsaf
+      hash: md5
+      md5: 475aaebaed7b5779ec459e0845841803.dir
+      size: 4740725
+      nfiles: 3
+    - path: params.yaml
+      hash: md5
+      md5: 8db51c3a28b41d17404eb5945c1075a0
+      size: 350
+    - path: src/features.py
+      hash: md5
+      md5: 47e846faa796521d129ecbf0951bf0a7
+      size: 8600
+    - path: src/train.py
+      hash: md5
+      md5: f20fd0b21976bb01d7ceb1bd9989d91c
+      size: 4433
+    outs:
+    - path: models
+      hash: md5
+      md5: 72de0134e9a41f51e94c44db7fa7582d.dir
+      size: 4949008
+      nfiles: 6
+  evaluate:
+    cmd: python -m src.evaluate
+    deps:
+    - path: data/features/engsaf
+      hash: md5
+      md5: dad9c568df2bda1792c4d32333840ea6.dir
+      size: 8450157
+      nfiles: 4
+    - path: data/processed/engsaf
+      hash: md5
+      md5: 475aaebaed7b5779ec459e0845841803.dir
+      size: 4740725
+      nfiles: 3
+    - path: models
+      hash: md5
+      md5: 72de0134e9a41f51e94c44db7fa7582d.dir
+      size: 4949008
+      nfiles: 6
+    - path: params.yaml
+      hash: md5
+      md5: 8db51c3a28b41d17404eb5945c1075a0
+      size: 350
+    - path: src/evaluate.py
+      hash: md5
+      md5: bf807a704d83c0dccf8d98cf79294d9e
+      size: 10261
+    - path: src/features.py
+      hash: md5
+      md5: 47e846faa796521d129ecbf0951bf0a7
+      size: 8600
+    - path: src/grouped_split.py
+      hash: md5
+      md5: f16042eb6dc26dff09f73fc9e252948a
+      size: 4584
+    outs:
+    - path: reports/baseline_metrics.json
+      hash: md5
+      md5: 1234cc024ac4be19e80b77bcad37b9cc
+      size: 24025
+    - path: reports/error_analysis.md
+      hash: md5
+      md5: fd61e37e0fde47a691286e24b9801a66
+      size: 5693
+    - path: reports/model2_comparison.md
+      hash: md5
+      md5: d602ce61990c0916700df22441624efe
+      size: 3269
