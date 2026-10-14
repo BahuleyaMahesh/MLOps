@@ -1,0 +1,32 @@
+# AI-Powered Study Assistant for Engineering Students
+# Phase 1: Development & Reproducibility Dependencies
+# Python Version: 3.11 (Tested with Python 3.11.9)
+# ====================================================
+
+# Data Processing
+numpy==1.26.4
+pandas==2.2.2
+pyarrow==15.0.2
+
+# Dataset Access
+datasets==2.19.2
+
+# Machine Learning & Embeddings
+scikit-learn==1.4.2
+sentence-transformers==2.7.0
+xgboost==2.0.3
+
+# Text Cleaning & Configuration
+beautifulsoup4==4.12.3
+pyyaml==6.0.1
+
+# Experiment Tracking
+mlflow==2.13.0
+
+# Data Version Control
+dvc==3.51.0
+
+# Exploratory Data Analysis & Notebooks
+matplotlib==3.8.4
+jupyter==1.0.0
+ipykernel==6.29.4
